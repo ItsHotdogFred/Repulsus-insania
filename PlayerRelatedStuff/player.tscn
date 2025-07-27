@@ -14,3 +14,9 @@ polygon = PackedVector2Array(0, 0, 48, 0, 48, 70, 23, 70, 0, 70)
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(24, 35)
 shape = SubResource("RectangleShape2D_g7qt8")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.05
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
