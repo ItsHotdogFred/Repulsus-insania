@@ -1,7 +1,17 @@
-[gd_scene load_steps=5 format=4 uid="uid://bjwxhqdqlr0g1"]
+[gd_scene load_steps=10 format=4 uid="uid://bjwxhqdqlr0g1"]
 
 [ext_resource type="PackedScene" uid="uid://dvwnkmankxtpn" path="res://PlayerRelatedStuff/player.tscn" id="1_sce7s"]
+[ext_resource type="Script" uid="uid://huuox8yplb7" path="res://MainSceneRelatedStuff/main.gd" id="1_vheid"]
 [ext_resource type="Texture2D" uid="uid://0oh0ktlll2jc" path="res://icon.svg" id="2_d8572"]
+[ext_resource type="Script" uid="uid://cutmv3dabevqb" path="res://MainSceneRelatedStuff/ui.gd" id="3_d8572"]
+[ext_resource type="PackedScene" uid="uid://cy17gsur6mfqf" path="res://spike.tscn" id="4_pn4au"]
+[ext_resource type="PackedScene" uid="uid://d2cypv286ngqv" path="res://flying_enemy.tscn" id="6_1fdv3"]
+
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_1fdv3"]
+vertices = PackedVector2Array(235, 664.703, -57.7109, 661.828, -57.4609, 645, 235, 645, 405, 435, -54.2734, 435, -48.2734, 40.2969, 675, 155, 1206.98, 515, 965, 515, 965, 475, 1218.87, 29.7266, 885, 475, 885, 155, 675, 475, 645, 475, 645, 435, 435, 435, 435, 436, 405, 436)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(8, 9, 10, 11), PackedInt32Array(10, 12, 13, 11), PackedInt32Array(6, 11, 13, 7), PackedInt32Array(7, 14, 15, 16), PackedInt32Array(17, 18, 19, 4), PackedInt32Array(17, 4, 7), PackedInt32Array(17, 7, 16)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-132, -44, 1306, -56, 1286, 760, -144, 746)])
+agent_radius = 85.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pn4au"]
 texture = ExtResource("2_d8572")
@@ -137,12 +147,51 @@ tile_size = Vector2i(8, 8)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_pn4au")
 
-[node name="Main" type="Node2D"]
+[node name="Main" type="Node2D" node_paths=PackedStringArray("player")]
+script = ExtResource("1_vheid")
+player = NodePath("Player")
 
-[node name="Player" parent="." instance=ExtResource("1_sce7s")]
+[node name="Player" parent="." node_paths=PackedStringArray("UI") groups=["Player"] instance=ExtResource("1_sce7s")]
+position = Vector2(142, 438)
+jumps = 2
+dashType = 4
+dashes = 2
+UI = NodePath("../UI")
 
-[node name="TileMapLayer" type="TileMapLayer" parent="."]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("KnockbackLabel")]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("3_d8572")
+KnockbackLabel = NodePath("KnockbackLabel")
+
+[node name="KnockbackLabel" type="Label" parent="UI"]
+layout_mode = 0
+offset_right = 235.0
+offset_bottom = 59.0
+theme_override_font_sizes/font_size = 48
+text = "Knockback: 1x"
+
+[node name="Map" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_1fdv3")
+
+[node name="TileMapLayer" type="TileMapLayer" parent="Map"]
 texture_filter = 1
 scale = Vector2(5, 5)
-tile_map_data = PackedByteArray("AAAAAA0AAAAGAAUAAAABAA0AAAAGAAUAAAACAA0AAAAGAAUAAAADAA0AAAAGAAUAAAAEAA0AAAAGAAUAAAAFAA0AAAAGAAUAAAAGAA0AAAAGAAUAAAAHAA0AAAAGAAUAAAAIAA4AAAAGAAUAAAAJAA4AAAAGAAUAAAAKAA4AAAAGAAUAAAALAA4AAAAGAAUAAAAMAA4AAAAGAAUAAAANAA4AAAAGAAUAAAAOAA4AAAAGAAUAAAAPAA4AAAAGAAUAAAAQAA4AAAAGAAUAAAARAA4AAAAGAAUAAAASAA4AAAAGAAUAAAATAA4AAAAGAAUAAAAUAA4AAAAGAAUAAAAVAA4AAAAGAAUAAAAWAA8AAAAGAAUAAAAXAA8AAAAGAAUAAAAYAA8AAAAGAAUAAAAZAA8AAAAGAAUAAAAaAA8AAAAGAAUAAAAbAA8AAAAGAAUAAAAcAA8AAAAGAAUAAAANAA0AAAAGAAUAAAA=")
+tile_map_data = PackedByteArray("AAAAAA0AAAAGAAUAAAABAA0AAAAGAAUAAAACAA0AAAAGAAUAAAADAA0AAAAGAAUAAAAEAA0AAAAGAAUAAAAFAA0AAAAGAAUAAAAGAA0AAAAGAAUAAAAHAA0AAAAGAAUAAAAIAA4AAAAGAAUAAAAJAA4AAAAGAAUAAAAKAA4AAAAGAAUAAAALAA4AAAAGAAUAAAAMAA4AAAAGAAUAAAANAA4AAAAGAAUAAAAOAA4AAAAGAAUAAAAPAA4AAAAGAAUAAAAQAA4AAAAGAAUAAAARAA4AAAAGAAUAAAASAA4AAAAGAAUAAAATAA4AAAAGAAUAAAAUAA4AAAAGAAUAAAAVAA4AAAAGAAUAAAAWAA8AAAAGAAUAAAAXAA8AAAAGAAUAAAAYAA8AAAAGAAUAAAAZAA8AAAAGAAUAAAAaAA8AAAAGAAUAAAAbAA8AAAAGAAUAAAAcAA8AAAAGAAUAAAANAA0AAAAGAAUAAAATAA0AAAAGAAUAAAATAAwAAAAGAAUAAAATAAsAAAAGAAUAAAATAAoAAAAGAAUAAAATAAkAAAAGAAUAAAATAAgAAAAGAAUAAAATAAcAAAAGAAUAAAATAAYAAAAGAAUAAAA=")
 tile_set = SubResource("TileSet_vheid")
+
+[node name="Spike" parent="Map" instance=ExtResource("4_pn4au")]
+position = Vector2(320, 521)
+
+[node name="Spike2" parent="Map" instance=ExtResource("4_pn4au")]
+position = Vector2(368, 521)
+
+[node name="Spike3" parent="Map" instance=ExtResource("4_pn4au")]
+position = Vector2(416, 521)
+
+[node name="Spike4" parent="Map" instance=ExtResource("4_pn4au")]
+position = Vector2(464, 521)
+
+[node name="FlyingEnemy" parent="." instance=ExtResource("6_1fdv3")]
