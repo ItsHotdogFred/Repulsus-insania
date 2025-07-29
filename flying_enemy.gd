@@ -5,6 +5,8 @@ extends CharacterBody2D
 var speed = 4500
 var player : CharacterBody2D
 
+@export var knockback : Vector2 = Vector2(0, 0)
+
 func _ready() -> void:
 	player = get_parent().player
 	#nav_agent.navigation_finished.connect(_on_nav_finished)
@@ -29,7 +31,20 @@ func _physics_process(delta: float) -> void:
 	var new_velocity = direction * speed * delta
 	
 	nav_agent.velocity = new_velocity
+	if velocity.length() > 0:
+		# 3. Get the direction by normalizing the velocity vector.
+		# The .normalized() method returns a unit vector (length of 1)
+		# that points in the same direction as the original vector.
+		knockback = velocity.normalized() * 450
+	else:
+		# If the node isn't moving, there is no direction.
+		knockback = Vector2.ZERO
 
 
 func _on_timer_timeout() -> void:
 	make_path(player.global_position)
+
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Player"):
+		body.apply_knockback(knockback)

@@ -6,14 +6,14 @@ extends CharacterBody2D
 @export var friction = 2000.0
 
 # Jump related stuff
-@export var jump_count : int = 2
-var current_jump_count : int
-var can_multi_jump : bool = false
+@export var jump_count: int = 2
+var current_jump_count: int
+var can_multi_jump: bool = false
 
-@export var knockbackmultiplyer : float = 1
-var isright : bool = false
+@export var knockbackmultiplyer: float = 1
+var isright: bool = false
 
-@export var UI : Control
+@export var UI: Control
 
 func _ready() -> void:
 	current_jump_count = jump_count
@@ -38,7 +38,7 @@ func _physics_process(delta):
 	
 	# Apply gravity. We only apply it when airborne.
 	# This will also naturally pull the character down from a knockback.
-	var foo : Label = UI.KnockbackLabel
+	var foo: Label = UI.KnockbackLabel
 	foo.text = "Knockback: " + str(knockbackmultiplyer) + "x"
 	
 	if not is_on_floor():
@@ -86,6 +86,5 @@ func _physics_process(delta):
 	
 	# Move the character
 	move_and_slide()
-
 # The timer and its timeout function are no longer needed.
 # func _on_timer_timeout() -> void: -> REMOVED

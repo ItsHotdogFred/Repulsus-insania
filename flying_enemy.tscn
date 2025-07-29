@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://d2cypv286ngqv"]
+[gd_scene load_steps=5 format=3 uid="uid://d2cypv286ngqv"]
 
 [ext_resource type="Script" uid="uid://drphx38tt0asl" path="res://flying_enemy.gd" id="1_2t4jl"]
 [ext_resource type="Texture2D" uid="uid://0oh0ktlll2jc" path="res://icon.svg" id="2_2t4jl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_yp6i7"]
-size = Vector2(76, 74)
+size = Vector2(75, 73)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2t4jl"]
+size = Vector2(78, 76)
 
 [node name="FlyingEnemy" type="CharacterBody2D"]
 motion_mode = 1
@@ -16,15 +19,23 @@ scale = Vector2(0.6, 0.585)
 texture = ExtResource("2_2t4jl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 37)
+position = Vector2(0.5, 37.5)
 shape = SubResource("RectangleShape2D_yp6i7")
+disabled = true
 
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
 avoidance_enabled = true
 debug_enabled = true
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.5
 autostart = true
 
+[node name="Hitbox" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 37)
+shape = SubResource("RectangleShape2D_2t4jl")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
